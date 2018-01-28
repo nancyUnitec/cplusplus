@@ -18,10 +18,22 @@ int testLeetCode()
 	removeDuplicates(arr, 3);
 	*/
 
+	/*
 	char *s = "aaa";
 	char *p = "a*a";
 
 	bool res = isMatch(s, p);
+
+	*/
+	
+	
+	struct ListNode n1, n2, n3, n4;
+	n1.val = 1; n1.next = &n2;
+	n2.val = 2; n2.next = &n3;
+	n3.val = 3; n3.next = &n4;
+	n4.val = 4; n4.next = NULL;
+	
+	struct ListNode* res = swapPairs(&n1);
 
 	return 0;
 }
@@ -127,5 +139,93 @@ bool isMatch(char* s, char* p) {
 	}
 
 	return res;
+
+}
+
+
+
+/*
+struct ListNode* swap(struct ListNode* n1,struct ListNode* n2)
+{
+struct ListNode* tmp = n2-> next;
+n1->next = tmp;
+n2->next = n1;
+
+return n1;
+}
+
+*/
+
+/*
+struct ListNode* swapPairs(struct ListNode* head) {
+
+if (!head)
+return NULL;
+
+else if (!(head->next))
+return head;
+
+else
+{
+//struct ListNode* new = (struct ListNode*)malloc(sizeof(struct ListNode));
+//new ->next = head->next;
+struct ListNode* new;
+struct ListNode* tail;
+//struct ListNode* tmp;
+
+struct ListNode* i = head;
+struct ListNode* j = head->next;
+new = j;
+
+while (i&&j)
+{
+//tail = swap(i,j);
+//tmp = j-> next;
+i->next = j->next;
+j->next = i;
+tail = i;
+
+if (i->next)
+{
+i = i->next;
+j = i->next;
+
+if (j)
+{
+tail->next = j;
+}
+
+}
+else
+break;
+
+}
+
+return new;
+
+}
+
+}
+
+
+*/
+
+struct ListNode* swapPairs(struct ListNode* head) {
+
+	if (!head)
+		return NULL;
+
+	else if (!(head->next))
+		return head;
+
+	else
+	{
+		struct ListNode* newHead = swapPairs(head->next->next);
+		struct ListNode* tmp = head->next;
+		head->next = newHead;
+		tmp->next = head;
+		return tmp;
+
+	}
 
 }
