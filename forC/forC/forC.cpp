@@ -19,13 +19,8 @@ void *getInstance(int userInput);
 
 void testInput();
 
-char* getReverse(char str[]);
 
-//void Hannoi(int n);
-void Hannoi(int n, char source, char dest, char temp);
 
-void testMalloc();
-void testNew();
 
 void nzp(int v);
 int testPassByArrayElement();
@@ -37,7 +32,6 @@ int test2DimArray();
 //int op2DimArray(int **);
 int op2DimArray(int p[][4]);
 
-void myGetReverse(char sour[], int len);
 
 int solution(int n);
 
@@ -50,17 +44,6 @@ int removeDuplicates(int* nums, int numsSize);
 int main()
 {
 	printf("hello, vc++");
-
-
-	char ss = '\0';
-	printf("ss = %c \n", ss);
-
-	int x = 0; 
-	int y = 0;
-	char str[10];
-	//char str[1];
-	x = strlen(str);
-	y = sizeof(str);
 
 	//char str3[10];
 	//str3 = "it315.org";   //error:expression must be a modifiable lvalue
@@ -101,19 +84,7 @@ int main()
 	//swapCharByArray();
 	//testInput();
 
-	//getReverse("abcde");
-
-	/*
-	char * strForRev = "abcde";
-	myGetReverse(strForRev, 5);
-
-	strForRev = "fghjk";
-	myGetReverse(strForRev, 5);
-	*/
 	
-
-	//Hannoi(3);
-	//Hannoi(3, 'A', 'C', 'B');
 
 	//testMalloc();
 
@@ -135,13 +106,7 @@ int main()
 	reverse(460);
     */
 
-	//testLeetCode();
-
-	char *s = "aaa";
-	char *p = "a*a";
-
-	bool res = isMatch(s, p);
-
+	testLeetCode();
 
 	return 0;
 }

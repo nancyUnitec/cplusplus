@@ -9,12 +9,20 @@ using namespace std;
 
 int testLeetCode()
 {
+	/*
 	int arr[3] = { 1,1,2 };
 	//int* nums = (int*)malloc(3 * sizeof(int));
 	arr[0] = 1;
 	arr[1] = 1;
 	arr[2] = 2;
 	removeDuplicates(arr, 3);
+	*/
+
+	char *s = "aaa";
+	char *p = "a*a";
+
+	bool res = isMatch(s, p);
+
 	return 0;
 }
 
