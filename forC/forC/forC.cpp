@@ -1,4 +1,4 @@
-// forC.cpp : Defines the entry point for the console application.
+﻿// forC.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
@@ -8,6 +8,7 @@
 #include<conio.h> 
 
 #include "forCPP.h"
+#include "leetcode.h"
 
 void test(char **p);
 void showTheSizeOfBlock();
@@ -38,9 +39,21 @@ int op2DimArray(int p[][4]);
 
 void myGetReverse(char sour[], int len);
 
+int solution(int n);
+
+void preVSfollow();
+
+bool isPalindrome(int x);
+int reverse(int x);
+int removeDuplicates(int* nums, int numsSize);
+
 int main()
 {
 	printf("hello, vc++");
+
+
+	char ss = '\0';
+	printf("ss = %c \n", ss);
 
 	int x = 0; 
 	int y = 0;
@@ -111,8 +124,153 @@ int main()
 
 	test2DimArray();
 
+	//solution(10);
+	//preVSfollow();
+
+	//isPalindrome(10001);
+
+	/*
+	reverse(9);
+	reverse(931);
+	reverse(460);
+    */
+
+	//testLeetCode();
+
+	char *s = "aaa";
+	char *p = "a*a";
+
+	bool res = isMatch(s, p);
+
+
 	return 0;
 }
+
+
+
+
+#include <stdio.h>
+#include <ctype.h>
+#include <stdlib.h>
+
+void print_array(int *a, int n)
+{
+	int i;
+
+	for (i = n - 1; i >= 0; --i) {
+		printf("%d", a[i]);
+	}
+	printf("\n");
+}
+
+int solution(int n)
+{
+	int *curr, *tmp;
+	int tmp_len;
+	int *p;
+	int carry = 0;
+	int i, j;
+	int size = n;
+	int count = 0;
+
+	curr = (int *)malloc(sizeof(int) * size);
+	if (!curr) {
+		printf("Out of memory.\n");
+		return -1;
+	}
+
+	tmp = (int *)malloc(sizeof(int) * size);
+	if (!tmp) {
+		free(curr);
+		printf("Out of memory.\n");
+		return -1;
+	}
+
+	for (i = 0; i < size; ++i) {
+		curr[i] = -1;
+		tmp[i] = -1;
+	}
+
+	tmp_len = 0;
+	for (i = 0; i < n; ++i) {
+		printf("i = %d \n\n", i);
+		carry = 0;
+		curr[0] = 1;
+
+		for (j = 1; j < tmp_len; ++j) {
+			printf("111111  j = %d \n", j);
+			printf("curr[%d] = %d \n", j, curr[j]);
+			printf("tmp[%d] = %d \n", j, tmp[j]);
+			printf("tmp[%d] = %d \n", j-1, tmp[j-1]);
+			printf("carry = %d \n", carry);
+			curr[j] = tmp[j] + tmp[j - 1] + carry;
+
+			carry = curr[j] / 10;
+			curr[j] = curr[j] % 10;
+		}
+
+		if (i > 0) {
+			printf("222222 j = %d \n", j);
+			printf("curr[%d] = %d \n", j, curr[j]);
+			printf("tmp[%d] = %d \n", j, tmp[j]);
+			printf("tmp[%d] = %d \n", j - 1, tmp[j - 1]);
+			printf("carry = %d \n", carry);
+			curr[j] = tmp[j - 1] + carry;
+			if (curr[j] >= 10) {
+				curr[j] = curr[j] % 10;
+				curr[++j] = 1;
+			}
+			tmp_len = ++j;
+		}
+		else {
+			tmp_len = 1;
+		}
+
+		p = tmp;
+		tmp = curr;
+		curr = p;
+	}
+
+	for (i = 0; i < size; ++i) {
+		printf("%d", tmp[i]);
+		if (tmp[i] == 1) {
+			++count;
+		}
+	}
+	printf("\ncount = %d.\n", count);
+
+	free(tmp);
+	free(curr);
+	return 0;
+}
+
+/*
+int main(void)
+{
+solution(1000);
+return 0;
+}
+*/
+
+void preVSfollow()
+{
+	int i,j;
+	int N = 10;
+	for (i = 0; i < N; i++)
+	{
+		printf("\n inside i = %d", i);
+	}
+	printf("\n outside i = %d", i);
+
+	for (j = 0; j < N; ++j)
+	{
+		printf("\n inside j = %d", j);
+	}
+	printf("\n outside j = %d", j);
+
+}
+
+
 
 void Hannoi(int n, char source, char dest, char temp)
 {
@@ -193,6 +351,10 @@ void memcpyChars(char *str, int step)
 
 	printf("res = %s", dest);
 }
+
+
+
+
 
 void testInput()
 {
@@ -379,4 +541,103 @@ get_s(iStr);
 printf("The 1st string is %s", iStr);
 }
 */
+
+bool isPalindrome(int x) {
+
+	int* bit = (int*)malloc(1000*sizeof(int));
+	int count = 0;
+	int m = 0;
+	int origin = x;
+	bool res = false;
+
+	//memset(bit, '\0', 1000 * sizeof(int));
+
+	for (int index = 0; index < 1000; index++)
+	{
+		bit[index] = -1;
+	}
+
+	while (x>0)
+	{
+		m = x % 10;
+		bit[count] = m;
+		count++;
+
+		x = x / 10;
+
+		printf("x=%d \n", x);
+	}
+
+	int i = 0;
+	int y = 0;
+
+	while (bit[i] > -1)
+	{
+		printf("bit[%d]=%d \n", i,bit[i]);
+		i++;
+	}
+
+	for (int j = 0; j < i; j++)
+	{
+		printf("before y=%d bit[%d] = %d \n", y, j, bit[j]);
+		y = y * 10 + bit[j];
+		printf("y[%d]=%d \n", j, y);
+	}
+
+	if (y == origin)
+		res = true;
+
+	free(bit);
+	bit = NULL;
+
+	return res;
+
+}
+
+int reverse(int x) {
+	int res = 0;
+	
+	int *p = (int*)malloc(10 * sizeof(int));
+	//assert(p);
+
+	int i = 0;
+	int j = 0;
+	int highest = 0;
+	int num = 0;
+
+	for (int index = 0; index < 10; index++)
+	{
+		p[index] = 0;
+	}
+
+	if (x == 0)
+	{
+
+	}
+	else 
+	{
+		while (x)
+		{
+			num = x % 10;
+			p[i] = num;
+			x /= 10;
+			i++;
+		}
+		highest = i-1;
+		//j = highest;
+		res = p[0];
+		j = 1;
+		
+		while (j<=highest)
+		{
+			res = res * 10 + p[j];
+			j++;
+		}
+		
+	}
+
+	free(p);
+	p = NULL;
+	return res;
+}
 
