@@ -229,3 +229,75 @@ struct ListNode* swapPairs(struct ListNode* head) {
 	}
 
 }
+
+struct ListNode* removeNthFromEnd(struct ListNode* head, int n) {
+    
+	// acceptted 1
+    // if(head == NULL)
+    //     return NULL;
+    // else if(head->next == NULL)
+    //     return NULL;
+    
+    // struct ListNode* first = head;
+    // struct ListNode* second = head;
+    // struct ListNode* prev;
+    // int count = 0;
+    // while(first)
+    // {
+    //     count++;
+    //     first = first->next;
+    // }
+    // int pos = count - n;
+    // int index = 0;
+    
+    // if(index < pos)
+    // {
+    //     while(index < pos)
+    //     {
+    //         prev = second;
+    //         second = second->next;
+    //         index++;
+    //     }
+    //     prev->next = second->next;
+
+    // }
+    // else
+    // {
+    //     head = head->next;
+    // }
+       
+    // return head;
+
+
+	// acceptted 2
+	if(head == NULL)
+        return NULL;
+    else if(head->next == NULL)
+        return NULL;
+    
+    struct ListNode* first = head;
+    struct ListNode* second = head;
+    struct ListNode* prev = head;
+    int gap = 0;
+    while(gap<n)
+    {
+        gap++;
+        first = first->next;
+    }
+    //int pos = count - n;
+    //int index = 0;
+    
+    while(first)
+    {
+        prev = second; 
+        first = first->next;  //what you want is to link prev with prev->next-next, so the second is redundant.
+        second = second->next;
+    }    
+    
+    if(second == head)  //if you use a dummy node point to the head, u can omit this step.
+        head = head->next;
+    else 
+        prev->next = second->next;
+
+    return head;
+}
