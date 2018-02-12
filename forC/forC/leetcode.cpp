@@ -26,16 +26,185 @@ int testLeetCode()
 
 	*/
 	
-	
+	/*
 	struct ListNode n1, n2, n3, n4;
 	n1.val = 1; n1.next = &n2;
 	n2.val = 2; n2.next = &n3;
 	n3.val = 3; n3.next = &n4;
 	n4.val = 4; n4.next = NULL;
-	
+
 	struct ListNode* res = swapPairs(&n1);
 
+	*/
+	
+	/*
+	char* s = "odd";
+	char* t = "egg";
+	bool res = isIsomorphic(s, t);
+    */
+
+	/*
+	char* s = "abcda";
+
+	char* p = longestPalindrome(s);
+	*/
+	/*
+	double x = 34.00515;
+	int n = -3;
+	double res = myPow(x, n);
+
+	*/
+
+	int size = 5;
+	int* arr = (int*)malloc(size * sizeof(int));
+	//int* nums = (int*)c;
+	arr[0] = 0;
+	arr[1] = 1;
+	arr[2] = 2;
+	arr[3] = 6;
+	//removeDuplicates(arr, 3);
+	int num = 7;
+	int pos = 2;
+	
+	int solutionSize = 0;
+	int* solution = &solutionSize;
+//	insertAtPosition(num, arr, size, pos);
+	int**res = permute(arr, 3, solution);
+
 	return 0;
+}
+
+
+void swap(int* p, int* q)
+{
+	int t = *p; *p = *q; *q = t;
+}
+void search(int* nums, int size, int*** arr, int* returnSize, int begin, int end)
+{
+	printf("\n search  %d,  %d \n", begin, end);
+	if (begin == end)
+	{
+		(*returnSize)++;
+		printf("\n realloc return size = %d \n", *returnSize);
+		*arr = (int**)realloc(*arr, sizeof(int*)*(*returnSize));
+		(*arr)[*returnSize - 1] = (int*)malloc(sizeof(int)*size);
+		for (int i = 0; i < size; i++)
+		{
+			printf("*arr[%d][%d] = num[%d] = %d \n", *returnSize - 1, i, i,nums[i]);
+			(*arr)[*returnSize - 1][i] = nums[i];
+		}
+			
+		return;
+	}
+	for (int i = begin; i <= end; i++)
+	{
+		swap(nums + begin, nums + i); //try to use each element as the head;
+		printf("swap : %d, %d \n", begin, i);
+		search(nums, size, arr, returnSize, begin + 1, end);
+		swap(nums + begin, nums + i);
+		printf("swap : %d, %d \n", begin, i);
+	}
+}
+
+//AC - 4ms;
+int** permute(int* nums, int size, int* returnSize)
+{
+	*returnSize = 0;
+	int** arr = (int**)malloc(sizeof(int*));
+	search(nums, size, &arr, returnSize, 0, size - 1);
+	return arr;
+}
+
+
+
+
+/*
+int** permute(int* nums, int numsSize, int* returnSize) {
+int** res = permute(nums, numsSize - 1, returnSize);
+for (int i = 0; i < *returnSize; i++)
+{
+int *sub = res[i];
+for (int j = 0; j <= numsSize; j++)
+{
+insertAtPosition(sub, numsSize - 1, j);
+}
+}
+
+}
+*/
+
+int* insertAtPosition(int num, int* queue, int qSize, int position)
+{
+	int temp = queue[position];
+	int buf = 0;
+	if (position < qSize - 1)
+		buf = queue[position + 1];
+	queue[position] = num;
+
+	for (int index = position + 1; index < qSize; index++)
+	{
+		queue[index] = temp;
+		temp = buf;
+		
+		if (position < qSize - 1)
+			int buf = queue[position + 1];
+	}
+	for (int i = 0; i < qSize; i++)
+		printf(" %d ", queue[i]);
+
+	return queue;
+}
+
+/////////////////run time error solution////////////////////
+//this solution is run time error
+//because if x is very small, x^n will be very small, close to zero
+//then 1/x will throw a divide 0 exception
+/*
+double stage(double x, int num) {
+if (num == 0) return 1;
+if (num == 1) return x;
+double pow = 0.0;
+if (num % 2 == 0)
+{
+pow = stage(x, num / 2);
+return pow*pow;
+}
+else
+{
+pow = stage(x, (num - 1) / 2);
+return pow*pow*x;
+}
+}
+
+double myPow(double x, int n) {
+if (n == 0)
+return 1;
+
+if (n<0)
+return 1 / stage(x, -n);
+else
+return stage(x, n);
+}
+*/
+
+////////////////accept solution///////////////////////////
+double myPow(double x, int num) {
+	if (x == 0) return 0;
+	if (num == 0) return 1;
+	if (num == 1) return x;
+	if (num == -1) return 1 / x;
+	double pow = 0.0;
+	if (num % 2 == 0)
+	{
+		pow = myPow(x, num / 2);
+		pow = pow*pow;
+	}
+	else
+	{
+		pow = myPow(x, (num - 1) / 2);
+		pow = pow*pow*x;
+	}
+	return pow;
 }
 
 int removeDuplicates(int* nums, int numsSize)
@@ -142,7 +311,134 @@ bool isMatch(char* s, char* p) {
 
 }
 
+bool isIsomorphic(char* s, char* t) {
+	/*
+	int m1[256] = { 0 };
+	int m2[256] = { 0 };
 
+	int i = 0;
+
+	while (s[i] && t[i])
+	{
+	if ((m1[s[i]]) == 0 && (m2[t[i]]) == 0)
+	{
+	m1[s[i]] = i + 1;
+	m2[t[i]] = i + 1;
+	}
+	else {
+	if (m1[s[i]] != m2[t[i]])
+	return false;
+	}
+	i++;
+	}
+
+	if (s[i] || t[i])
+	return false;
+
+	return true;
+
+	*/
+	
+	char m[256] = { '\0' };
+    int i = 0;
+
+	while (s[i] && t[i])
+	{
+		if ((m[s[i]]) == 0 )
+		{
+			m[s[i]] = t[i];
+		}
+		else {
+			if (m[s[i]] != t[i])
+				return false;
+		}
+		i++;
+	}
+
+	if (s[i] || t[i])
+		return false;
+
+	return true;
+
+}
+
+
+int expandAroundCenter(char*s, int left, int right)
+{
+	int L = left;
+	int R = right;
+	while (L >= 0 && (s[R] != '\0'))
+	{
+		if (s[L] == s[R]) {
+			L--;
+			R++;
+		}
+		else
+		{
+			return R - L - 2;
+		}
+
+	}
+	return R - L - 2;
+}
+
+char* longestPalindrome(char* s) {
+	if (!s)
+		return s;
+
+	if (strlen(s) <= 1)
+		return s;
+
+	int len1 = 0;
+	int len2 = 0;
+	int maxlen = 0;
+	int cen1 = -1;
+	int cen2 = -1;
+
+	int left;
+	int right;
+	int i = 0;
+
+	for (i = 0; i < strlen(s); i++)
+	{
+		len1 = expandAroundCenter(s, i, i);
+		len2 = expandAroundCenter(s, i, i + 1);
+
+		if (maxlen < len1) {
+			maxlen = len1;
+			cen1 = i;
+			cen2 = -1;
+		}
+		if (maxlen < len2) {
+			maxlen = len2;
+			cen2 = i;
+			cen1 = -1;
+		}
+
+	}
+	if (cen1 != -1)
+	{
+		left = cen1 - maxlen / 2;
+		right = cen1 + maxlen / 2;
+
+	}
+	else if(cen2 != -1 )
+	{
+		left = cen2 - (maxlen - 1) / 2;
+		right = cen2 + 1 + (maxlen - 1) / 2;
+
+	}
+	else
+	{
+		left = 0;
+		right = 0;
+	}
+	char *res = (char*)malloc(maxlen + 2);
+	res[maxlen+1] = '\0';
+	strncpy(res, s+left, maxlen+1);
+
+	return res;
+}
 
 /*
 struct ListNode* swap(struct ListNode* n1,struct ListNode* n2)
