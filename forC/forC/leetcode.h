@@ -24,6 +24,10 @@ char* longestPalindrome(char* s);
 int* insertAtPosition(int num, int* queue, int qSize, int position);
 int** permute(int* nums, int size, int* returnSize);
 
+int outputP(int* nums, int *fixedArr, int fixedPos, int fixedSize, int arrSize, int ***block);
+
+int** yx_permute(int* nums, int numsSize, int* returnSize);
+
 //Definition for singly-linked list.
 struct ListNode {
     int val;

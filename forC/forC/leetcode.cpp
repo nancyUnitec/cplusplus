@@ -57,6 +57,9 @@ int testLeetCode()
 
 	int size = 5;
 	int* arr = (int*)malloc(size * sizeof(int));
+
+	int* fix = (int*)malloc(size * sizeof(int));
+	
 	//int* nums = (int*)c;
 	arr[0] = 0;
 	arr[1] = 1;
@@ -65,11 +68,27 @@ int testLeetCode()
 	//removeDuplicates(arr, 3);
 	int num = 7;
 	int pos = 2;
+	int returnSize = 0;
 	
-	int solutionSize = 0;
-	int* solution = &solutionSize;
+	//int solutionSize = 0;
+	//int* solution = &solutionSize;
 //	insertAtPosition(num, arr, size, pos);
-	int**res = permute(arr, 3, solution);
+	//int**res = permute(arr, 3, solution);
+
+	int** block = (int**)malloc(sizeof(int*));
+	//int solNum = outputP(arr, fix, 0, size-1, size-1, &block);
+	/*
+	for(int i = 0; i < solNum; i++ )
+	{
+		printf(" solution %d is :", i);
+		int *solution = block[i];
+		for (int j = 0; j < size - 1; j++)
+			printf(" %d ", solution[j]);
+		printf("\n");
+	}
+	*/
+
+	block = yx_permute(arr, 4, &returnSize);
 
 	return 0;
 }
@@ -115,6 +134,69 @@ int** permute(int* nums, int size, int* returnSize)
 	return arr;
 }
 
+void swapPos(int *numbers, int pos1, int pos2)
+{
+	printf("swap pos1 = %d, pos2 = %d \n ", pos1,pos2);
+	int temp = numbers[pos1];
+	numbers[pos1] = numbers[pos2];
+	numbers[pos2] = temp;
+}
+
+int outputP(int* nums,int *fixedArr, int fixedPos, int fixedSize, int arrSize, int ***block)
+{
+	static int solutionNum = 0;
+	for (int n = 0; n < arrSize; n++)
+		printf(" %d ", nums[n]);
+	printf("pppppp start arr size = %d \n ", arrSize);
+	//if (fixedPos < arrSize-1) {
+	if (arrSize > 1) {
+		for (int n=0; n<arrSize; n++)
+		{ 
+			swapPos(nums,0,n);
+			fixedArr[fixedPos] = nums[0];
+			outputP(nums+1,fixedArr, fixedPos+1, fixedSize, arrSize-1,block);
+			swapPos(nums,n,0);
+		}
+		
+	}
+	else
+	{
+		fixedArr[fixedPos] = nums[0];
+		for (int n = 0; n < fixedSize; n++)
+			printf(" %d ", fixedArr[n]);
+		//printf(" %d ", nums[arrSize-1]);
+		printf("end arrSize = %d \n\n ", arrSize);
+		//if (arrSize == fixedSize)
+		{
+			*block = (int**)realloc(*block, sizeof(int*)*(solutionNum + 1)); 
+			int **block_content = *block;
+			block_content[solutionNum] = (int*)malloc(fixedSize*sizeof(int));
+			memcpy(block_content[solutionNum], fixedArr, fixedSize * sizeof(int));
+			//for (int j = 0; j < fixedSize; j++)
+				//printf(" %d ", solution[j]);
+				//block_content[solutionNum][j] = fixedArr[j];
+			
+			solutionNum++;
+		}
+	}
+	return solutionNum;
+}
+
+
+int** yx_permute(int* nums, int numsSize, int* returnSize) {
+	if (numsSize == 0)
+		return NULL;
+	if (numsSize == 1)
+		return &nums;
+
+	int** block = (int**)malloc(sizeof(int*));
+
+	int* fix = (int*)malloc(numsSize * sizeof(int));
+	int solNum = outputP(nums, fix, 0, numsSize, numsSize, &block);
+	*returnSize = solNum;
+
+	return block;
+}
 
 
 
@@ -362,27 +444,109 @@ bool isIsomorphic(char* s, char* t) {
 
 }
 
-
+/*longestPalindrome accepted solution 1
 int expandAroundCenter(char*s, int left, int right)
 {
-	int L = left;
-	int R = right;
+int L = left;
+int R = right;
+while (L >= 0 && (s[R] != '\0'))
+{
+if (s[L] == s[R]) {
+L--;
+R++;
+}
+else
+{
+return R - L - 2;
+}
+
+}
+return R - L - 2;
+}
+
+char* longestPalindrome(char* s) {
+if (!s)
+return s;
+
+if (strlen(s) <= 1)
+return s;
+
+int len1 = 0;
+int len2 = 0;
+int maxlen = 0;
+int cen1 = -1;
+int cen2 = -1;
+
+int left;
+int right;
+int i = 0;
+
+for (i = 0; i < strlen(s); i++)
+{
+len1 = expandAroundCenter(s, i, i);
+len2 = expandAroundCenter(s, i, i + 1);
+
+if (maxlen < len1) {
+maxlen = len1;
+cen1 = i;
+cen2 = -1;
+}
+if (maxlen < len2) {
+maxlen = len2;
+cen2 = i;
+cen1 = -1;
+}
+
+}
+if (cen1 != -1)
+{
+left = cen1 - maxlen / 2;
+right = cen1 + maxlen / 2;
+
+}
+else if(cen2 != -1 )
+{
+left = cen2 - (maxlen - 1) / 2;
+right = cen2 + 1 + (maxlen - 1) / 2;
+
+}
+else
+{
+left = 0;
+right = 0;
+}
+char *res = (char*)malloc(maxlen + 2);
+res[maxlen+1] = '\0';
+strncpy(res, s+left, maxlen+1);
+
+return res;
+}
+
+*/
+
+int expandAroundCenter(char*s, int *left, int *right)
+{
+	int L = *left;
+	int R = *right;
 	while (L >= 0 && (s[R] != '\0'))
 	{
 		if (s[L] == s[R]) {
+			*left = L;
 			L--;
+			*right = R;
 			R++;
 		}
 		else
 		{
-			return R - L - 2;
+			return R - L - 1;
 		}
 
 	}
-	return R - L - 2;
+	return R - L - 1;
 }
 
 char* longestPalindrome(char* s) {
+
 	if (!s)
 		return s;
 
@@ -392,50 +556,40 @@ char* longestPalindrome(char* s) {
 	int len1 = 0;
 	int len2 = 0;
 	int maxlen = 0;
-	int cen1 = -1;
-	int cen2 = -1;
+	int left = -1;
+	int right = -1;
 
-	int left;
-	int right;
+	int L1, L2; int R1, R2;
+	int *left1 = &L1;
+	int *right1 = &R1;
+	int *left2 = &L2;
+	int *right2 = &R2;
+
 	int i = 0;
 
 	for (i = 0; i < strlen(s); i++)
 	{
-		len1 = expandAroundCenter(s, i, i);
-		len2 = expandAroundCenter(s, i, i + 1);
+		*left1 = i;
+		*right1 = i;
+		len1 = expandAroundCenter(s, left1, right1);
+		*left2 = i;
+		*right2 = i + 1;
+		len2 = expandAroundCenter(s, left2, right2);
 
 		if (maxlen < len1) {
 			maxlen = len1;
-			cen1 = i;
-			cen2 = -1;
+			left = *left1;	
 		}
 		if (maxlen < len2) {
 			maxlen = len2;
-			cen2 = i;
-			cen1 = -1;
+			left = *left2;
 		}
 
 	}
-	if (cen1 != -1)
-	{
-		left = cen1 - maxlen / 2;
-		right = cen1 + maxlen / 2;
 
-	}
-	else if(cen2 != -1 )
-	{
-		left = cen2 - (maxlen - 1) / 2;
-		right = cen2 + 1 + (maxlen - 1) / 2;
-
-	}
-	else
-	{
-		left = 0;
-		right = 0;
-	}
-	char *res = (char*)malloc(maxlen + 2);
-	res[maxlen+1] = '\0';
-	strncpy(res, s+left, maxlen+1);
+	char *res = (char*)malloc(maxlen + 1);
+	res[maxlen] = '\0';
+	strncpy(res, s + left, maxlen);
 
 	return res;
 }
