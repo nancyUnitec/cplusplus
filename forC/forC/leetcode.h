@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <string>
+
+#include<vector>
 using namespace std;
 
 int testLeetCode();
@@ -24,14 +26,27 @@ char* longestPalindrome(char* s);
 int* insertAtPosition(int num, int* queue, int qSize, int position);
 int** permute(int* nums, int size, int* returnSize);
 
-int outputP(int* nums, int *fixedArr, int fixedPos, int fixedSize, int arrSize, int ***block);
+void outputP(int* nums, /*int *fixedArr, int fixedPos, */int fixedSize, int arrSize, int ***block, int* return_Size);
 
 int** yx_permute(int* nums, int numsSize, int* returnSize);
 
+string minWindow(string s, string t);
+
+void rotate(vector<vector<int> > &matrix);
+
+struct Interval {
+	int start;
+	int end;
+	Interval() : start(0), end(0) {}
+	Interval(int s, int e) : start(s), end(e) {}
+};
+
+vector<Interval> mergeIntervals(vector<Interval>& intervals);
 //Definition for singly-linked list.
 struct ListNode {
     int val;
     struct ListNode *next;
 };
+
 
 

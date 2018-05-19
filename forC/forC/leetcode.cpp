@@ -2,6 +2,9 @@
 
 #include <iostream>
 #include <string>
+
+#include<vector>
+#include<algorithm>
 using namespace std;
 
 #include "forCPP.h"
@@ -55,6 +58,9 @@ int testLeetCode()
 
 	*/
 
+
+	/*
+	*/
 	int size = 5;
 	int* arr = (int*)malloc(size * sizeof(int));
 
@@ -75,7 +81,7 @@ int testLeetCode()
 //	insertAtPosition(num, arr, size, pos);
 	//int**res = permute(arr, 3, solution);
 
-	int** block = (int**)malloc(sizeof(int*));
+	//int** block = (int**)malloc(sizeof(int*));
 	//int solNum = outputP(arr, fix, 0, size-1, size-1, &block);
 	/*
 	for(int i = 0; i < solNum; i++ )
@@ -88,7 +94,43 @@ int testLeetCode()
 	}
 	*/
 
-	block = yx_permute(arr, 4, &returnSize);
+	//block = yx_permute(arr, 4, &returnSize);
+
+	/*
+	string s = "pnsdfsdfsfsalinda";
+	string t = "na";
+	
+	string set = minWindow(s, t);
+
+	Interval a = Interval(1, 3);
+	Interval b = Interval(2, 6);
+
+	vector<Interval> vi;
+	vi.push_back(a);
+	vi.push_back(b);
+
+	vector<Interval> vo;
+	//vector<Interval> merge(vector<Interval>& intervals) {
+	vo = mergeIntervals(vi);
+	*/
+
+	
+	int arr1[] = {1, 2, 3};
+	int arr2[] = {4, 5, 6};
+	int arr3[] = {7, 8, 9};
+													   
+	vector<int> iv1(arr1, arr1 + 3);
+	vector<int> iv2(arr2, arr2 + 3);
+	vector<int> iv3(arr3, arr3 + 3);
+	for (auto x : iv1)//输出应该是va里面的值
+		cout << x << " ";
+
+	vector<vector<int> > matrix;
+	matrix.push_back(iv1);
+	matrix.push_back(iv2);
+	matrix.push_back(iv3);
+
+	rotate(matrix);
 
 	return 0;
 }
@@ -142,47 +184,50 @@ void swapPos(int *numbers, int pos1, int pos2)
 	numbers[pos2] = temp;
 }
 
-int outputP(int* nums,int *fixedArr, int fixedPos, int fixedSize, int arrSize, int ***block)
+void outputP(int* nums,/*int *fixedArr,*/ /*int fixedPos,*/ int fixedSize, int arrSize, int ***block, int* return_Size)
 {
-	static int solutionNum = 0;
+	//static int solutionNum = 0;
 	for (int n = 0; n < arrSize; n++)
 		printf(" %d ", nums[n]);
-	printf("pppppp start arr size = %d \n ", arrSize);
+	printf("pppppp start arr size = %d, return_Size = %d \n ", arrSize, *return_Size);
 	//if (fixedPos < arrSize-1) {
 	if (arrSize > 1) {
 		for (int n=0; n<arrSize; n++)
 		{ 
 			swapPos(nums,0,n);
-			fixedArr[fixedPos] = nums[0];
-			outputP(nums+1,fixedArr, fixedPos+1, fixedSize, arrSize-1,block);
+			//fixedArr[fixedPos] = nu8ms[0];
+			outputP(nums+1/*,fixedArr, fixedPos+1*/, fixedSize, arrSize-1,block, return_Size);
 			swapPos(nums,n,0);
 		}
 		
 	}
 	else
 	{
-		fixedArr[fixedPos] = nums[0];
+		//fixedArr[fixedPos] = nums[0];
 		for (int n = 0; n < fixedSize; n++)
-			printf(" %d ", fixedArr[n]);
+			printf(" %d ", nums[n]);
 		//printf(" %d ", nums[arrSize-1]);
 		printf("end arrSize = %d \n\n ", arrSize);
 		//if (arrSize == fixedSize)
 		{
-			*block = (int**)realloc(*block, sizeof(int*)*(solutionNum + 1)); 
+			printf("before *return_Size = %d \n ", *return_Size);
+			(*return_Size)++;
+			printf("after *return_Size = %d \n ", *return_Size);
+			int solNum = *return_Size;
+			*block = (int**)realloc(*block, sizeof(int*)*(*return_Size + 1));
 			int **block_content = *block;
-			block_content[solutionNum] = (int*)malloc(fixedSize*sizeof(int));
-			memcpy(block_content[solutionNum], fixedArr, fixedSize * sizeof(int));
-			//for (int j = 0; j < fixedSize; j++)
-				//printf(" %d ", solution[j]);
-				//block_content[solutionNum][j] = fixedArr[j];
-			
-			solutionNum++;
+			block_content[(*return_Size)-1] = (int*)malloc(fixedSize*sizeof(int));
+			memcpy(block_content[(*return_Size)-1], nums, fixedSize * sizeof(int));
+		
+			//solutionNum++;
 		}
 	}
-	return solutionNum;
+	//return solutionNum;
+	return;
 }
 
-
+//this solution is ok on vs2017, but fail on leetcode web page.... 5555555~~~
+//cost me the whole night...
 int** yx_permute(int* nums, int numsSize, int* returnSize) {
 	if (numsSize == 0)
 		return NULL;
@@ -192,8 +237,8 @@ int** yx_permute(int* nums, int numsSize, int* returnSize) {
 	int** block = (int**)malloc(sizeof(int*));
 
 	int* fix = (int*)malloc(numsSize * sizeof(int));
-	int solNum = outputP(nums, fix, 0, numsSize, numsSize, &block);
-	*returnSize = solNum;
+	outputP(nums, /*fix, 0,*/ numsSize, numsSize, &block, returnSize);
+	//*returnSize = solNum;
 
 	return block;
 }
@@ -751,3 +796,139 @@ struct ListNode* removeNthFromEnd(struct ListNode* head, int n) {
 
     return head;
 }
+
+void printMap(vector<int> map)
+{
+	for (int i = 0; i < map.size(); i++)
+	{
+		if(map[i]!=0)
+			cout << " map["<<i<<"] = " << map[i] ;
+	}
+	cout << " \n ";
+}
+
+string minWindow(string s, string t) {
+	vector<int> map(128, 0);//{0,0,...,0} 128 zero
+	for (auto c : t) map[c]++; //for each item c in t
+	printMap(map);
+	int counter = t.size(), begin = 0, end = 0, d = INT_MAX, head = 0;
+	while (end<s.size()) {
+		if (map[s[end++]]-->0) counter--; //in t
+		printMap(map);
+		while (counter == 0) { //valid
+			if (end - begin<d)  d = end - (head = begin);
+			printf("begin = %d, s[begin] = %c ,end = %d, s[end] = %c \n", begin,s[begin], end, s[end]);
+
+			if (map[s[begin++]]++ == 0)//the left set does not contain s[begin]
+			{ 
+				counter++;  //make it invalid
+			}
+			printMap(map);
+		}
+	}
+	return d == INT_MAX ? "" : s.substr(head, d);
+}
+
+vector<Interval> mergeIntervals(vector<Interval>& intervals) {
+	if (intervals.empty()) return vector<Interval>{};
+	vector<Interval> res;
+	sort(intervals.begin(), intervals.end(), [](Interval a, Interval b) {return a.start < b.start; });
+	res.push_back(intervals[0]);
+	for (int i = 1; i < intervals.size(); i++) {
+		if (res.back().end < intervals[i].start) res.push_back(intervals[i]);
+		else
+			res.back().end = max(res.back().end, intervals[i].end);
+	}
+	return res;
+}
+
+/*
+* clockwise rotate
+* first reverse up to down, then swap the symmetry
+* 1 2 3     7 8 9     7 4 1
+* 4 5 6  => 4 5 6  => 8 5 2
+* 7 8 9     1 2 3     9 6 3
+*/
+void rotate(vector<vector<int> > &matrix) {
+	//first reverse
+	reverse(matrix.begin(), matrix.end());
+	for (int i = 0; i < matrix.size(); ++i) {
+		for (int j = i + 1; j < matrix[i].size(); ++j)
+			//then swap
+			swap(matrix[i][j], matrix[j][i]);
+	}
+}
+
+// travel all the words combinations to maintain a window
+// there are wl(word len) times travel
+// each time, n/wl words, mostly 2 times travel for each word
+// one left side of the window, the other right side of the window
+// so, time complexity O(wl * 2 * N/wl) = O(2N)
+vector<int> findSubstring(string S, vector<string> &L) {
+	vector<int> ans;       int n = S.size(), cnt = L.size();
+	if (n <= 0 || cnt <= 0) return ans;
+
+	// init word occurence
+	unordered_map<string, int> dict;
+	for (int i = 0; i < cnt; ++i) dict[L[i]]++;
+
+	// travel all sub string combinations
+	int wl = L[0].size();
+	for (int i = 0; i < wl; ++i) {
+		int left = i, count = 0; unordered_map<string, int> tdict;
+		for (int j = i; j <= n - wl; j += wl) {
+			string str = S.substr(j, wl);
+			// a valid word, accumulate results
+			if (dict.count(str)) {
+				tdict[str]++;
+				if (tdict[str] <= dict[str])
+					count++;
+				else {
+					// a more word, advance the window left side possiablly
+					while (tdict[str] > dict[str]) {
+						string str1 = S.substr(left, wl);
+						tdict[str1]--;
+						if (tdict[str1] < dict[str1]) count--;
+						left += wl;
+					}
+				}
+				// come to a result
+				if (count == cnt) {
+					ans.push_back(left);
+					// advance one word
+					tdict[S.substr(left, wl)]--;    count--;     left += wl;
+				}
+			}
+			// not a valid word, reset all vars
+			else {
+				tdict.clear();   count = 0;   left = j + wl;
+			}
+		}
+	}
+	return ans;
+}
+/*
+*/
+// int findSubstring(string s) {
+
+// 	vector<int> map(128, 0);
+// 	int counter; // check whether the substring is valid
+// 	int begin = 0, end = 0; //two pointers, one point to tail and one  head
+// 	int d; //the length of substring
+
+// 	for () { /* initialize the hash map here */ }
+
+// 	while (end<s.size()) {
+// 		if (map[s[end++]]-- ? ) {  /* modify counter here */ }
+// 		while (/* counter condition */) {
+
+// 			/* update d here if finding minimum*/
+
+// 			//increase begin to make it invalid/valid again
+// 			if (map[s[begin++]]++ ? ) { /*modify counter here*/ }
+// 		}
+
+// 		/* update d here if finding maximum*/
+// 	}
+// 	return d;
+// }
