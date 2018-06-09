@@ -50,32 +50,34 @@ int main(void)
 	
     //testHeapAddress();
 	
-    testCharPointer();
+    // testCharPointer();
     
     //testUserInput();
 
-    //testSemaphoreInThread();
+    testSemaphoreInThread();
 
     //testIntArray();
 	
-	//testMutexInThread();
+	// testMutexInThread();
 
     //testArrayAddress();
 	
     //testShift(14);
 
-    testfgets();
+    // testfgets();
 	
-//	findPrime();
+    //	findPrime();
 
     //testSearch(binarySearchRecursive);
     //testSearch(binarySearchNormal);
 	
-    testSearch(insertSearch);
+    // testSearch(insertSearch);
 	
 
-	testPrintfAndAscii();
+	// testPrintfAndAscii();
 	
+    printf("you are dead \n");
+
     return 0;
 }
 
@@ -279,11 +281,14 @@ int testMutexInThread()
         exit(EXIT_FAILURE);
     }
 
-    int input;
+    //int input;  if the input variable is declared here
+    //it can only block for once
+    //coz once the input value has been scaned, it will stay in &input???? i'm not sure about this
 
     while(1) {
         pthread_mutex_lock(&lock);
         
+        int input;//this would block the program for each loop
 		scanf("%d",&input);
         printf("The user has input %d.\n",input);
     
