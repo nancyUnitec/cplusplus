@@ -142,6 +142,7 @@
     <ClInclude Include="experiment.h" />
     <ClInclude Include="forCPP.h" />
     <ClInclude Include="leetcode.h" />
+    <ClInclude Include="playground.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -151,6 +152,7 @@
     <ClCompile Include="forC.cpp" />
     <ClCompile Include="forCPP.cpp" />
     <ClCompile Include="leetcode.cpp" />
+    <ClCompile Include="playground.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

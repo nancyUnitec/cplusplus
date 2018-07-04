@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include <iostream>
 #include <string>
@@ -9,6 +9,7 @@ using namespace std;
 
 #include "forCPP.h"
 #include "leetcode.h"
+#include "playground.h"
 
 int testLeetCode()
 {
@@ -96,12 +97,13 @@ int testLeetCode()
 
 	//block = yx_permute(arr, 4, &returnSize);
 
-	/*
+	
 	string s = "pnsdfsdfsfsalinda";
 	string t = "na";
 	
-	string set = minWindow(s, t);
+	//string set = minWindow(s, t);
 
+	/*
 	Interval a = Interval(1, 3);
 	Interval b = Interval(2, 6);
 
@@ -114,7 +116,7 @@ int testLeetCode()
 	vo = mergeIntervals(vi);
 	*/
 
-	
+	/*
 	int arr1[] = {1, 2, 3};
 	int arr2[] = {4, 5, 6};
 	int arr3[] = {7, 8, 9};
@@ -131,6 +133,12 @@ int testLeetCode()
 	matrix.push_back(iv3);
 
 	rotate(matrix);
+
+	string str = "12";
+	//int r = my_numDecodings_1(str);
+
+	int r = uniquePaths(3, 2);
+	*/
 
 	return 0;
 }
@@ -801,8 +809,11 @@ void printMap(vector<int> map)
 {
 	for (int i = 0; i < map.size(); i++)
 	{
-		if(map[i]!=0)
+		if (map[i] != 0)
+		{
 			cout << " map["<<i<<"] = " << map[i] ;
+			printf("i-> %c \n", i);
+		}
 	}
 	cout << " \n ";
 }
@@ -813,16 +824,22 @@ string minWindow(string s, string t) {
 	printMap(map);
 	int counter = t.size(), begin = 0, end = 0, d = INT_MAX, head = 0;
 	while (end<s.size()) {
+		printf("1111111 begin = %d, s[begin] = %c ,end = %d, s[end] = %c \n", begin, s[begin], end, s[end]);
+		//printf("1111111 end = %d, s[end] = %c , map[s[end]] = %d \n",end, s[end], map[s[end]]);
 		if (map[s[end++]]-->0) counter--; //in t
+		//printf("2222222 end = %d, s[end] = %c , map[s[end]] = %d, counter = %d \n", end,s[end], map[s[end]], counter);
+
+										  //printf("2222222 begin = %d, s[begin] = %c ,end = %d, s[end] = %c \n", begin, s[begin], end, s[end]);
+		printf("11111111 counter = %d \n", counter);
 		printMap(map);
 		while (counter == 0) { //valid
 			if (end - begin<d)  d = end - (head = begin);
-			printf("begin = %d, s[begin] = %c ,end = %d, s[end] = %c \n", begin,s[begin], end, s[end]);
-
+			printf("222222 begin = %d, s[begin] = %c ,end = %d, s[end] = %c \n", begin,s[begin], end, s[end]);
 			if (map[s[begin++]]++ == 0)//the left set does not contain s[begin]
 			{ 
 				counter++;  //make it invalid
 			}
+			printf("22222222 counter = %d \n", counter);
 			printMap(map);
 		}
 	}
@@ -864,6 +881,7 @@ void rotate(vector<vector<int> > &matrix) {
 // each time, n/wl words, mostly 2 times travel for each word
 // one left side of the window, the other right side of the window
 // so, time complexity O(wl * 2 * N/wl) = O(2N)
+/*
 vector<int> findSubstring(string S, vector<string> &L) {
 	vector<int> ans;       int n = S.size(), cnt = L.size();
 	if (n <= 0 || cnt <= 0) return ans;
@@ -906,6 +924,201 @@ vector<int> findSubstring(string S, vector<string> &L) {
 		}
 	}
 	return ans;
+}
+*/
+
+//my solution, for s = "12", it gives a result of 2 in vs2010
+//however, in leetcode webpage, it output 0?????
+
+int my_getWays(string s,/*char* s */ int len, int *ways);
+
+int my_numDecodings(string s/*char* s */)
+{
+	const char* pchar = s.data();//strlen is for char* only
+	//so you have to get char* by data()
+	//u can also get char* by const char *pchar = s.c_str()
+	int slen = strlen(pchar);
+	int *ways = (int *)malloc(slen * sizeof(int));
+	//memset(ways, 0, slen * sizeof(int));
+	for (int i = 0; i< slen; i++)
+		ways[i] = -1;
+	return my_getWays(s,slen,ways);
+}
+
+int my_getWays(string s, int len, int *ways )
+{
+	cout << s << endl;
+	int r = 0;
+	if (ways[len] > -1)
+		return ways[len];
+	if (len == 1)
+		r = 1;
+	else if (len == 2)
+	{
+		if (s[0] == '1')
+		{
+			if (s[1] == '0')
+				r = 1;
+			else
+			{
+				cout << "len == 2" << endl;
+				r = 2;
+
+			}
+		}
+		else if (s[0] == '2' && s[1]<'7'&& s[1]>'0') //this is redundant.
+		{
+			r = 2;//the condition of len>2 and len=2 can be put together. 
+		}
+		else
+		{ 
+			r = 1;
+		}
+	}
+	else
+	{
+		r = my_getWays(s.substr(1), len - 1, ways);//substr will cause compile error on leetcode
+		//you should instead use pos to control.
+		if( s[0]=='1' ||(s[0] == '2' && s[1]<'7'))
+			r += my_getWays(s.substr(2), len - 2, ways);
+	}
+
+	ways[len] = r;
+		return r;
+}
+
+int my_getWays_1(string &s, int pos, vector<int> &ways);
+//improved version
+int my_getWays_1(string &s, int pos, vector<int> &ways)
+{
+	int len = s.length();
+	//cout << s << endl;
+	int r = 0;
+	if (ways[pos] > -1)
+		return ways[pos];
+
+	if (s[pos] == '0')
+		return 0;
+
+	if (pos >= len - 1)
+		r = 1;
+	else
+	{
+		r = my_getWays_1(s, pos + 1, ways);
+		if (s[pos] == '1' || (s[pos] == '2' && s[pos + 1]<'7'))
+			r += my_getWays_1(s, pos + 2, ways);
+	}
+
+	ways[pos] = r;
+	return r;
+}
+
+
+int numDecodings(string s)
+{
+	int slen = s.length();  //use length() instead of convert to char*
+	vector<int> memo(slen + 1, -1);//use vector to avoid malloc and memset
+	return my_getWays_1(s, 0, memo);
+}
+//haha I'm so proud of this solution
+//as my runtime beats 100% of c submissions
+/**
+* Definition for singly-linked list.
+* struct ListNode {
+*     int val;
+*     struct ListNode *next;
+* };
+*/
+int getLenth(struct ListNode* head, struct ListNode** tail)
+{
+	int len = 0;
+	while (head)
+	{
+		len++;
+		*tail = head;
+		head = head->next;
+	}
+	return len;
+
+}
+
+struct ListNode* rotateRight(struct ListNode* head, int k) {
+
+	struct ListNode dmNode1;
+	struct ListNode *p = &dmNode1;
+	struct ListNode dmNode2;
+	struct ListNode *tail = &dmNode2;
+	dmNode1.next = head;
+
+	int l = getLenth(head, &tail);
+	if (l<2 || k == 0)
+		return head;
+
+
+	k = k%l;
+
+	p->next = head;
+	for (int i = 0; i<l - k; i++)
+	{
+		p = p->next;
+	}
+	tail->next = dmNode1.next;
+	dmNode1.next = p->next;
+	p->next = NULL;
+
+	return dmNode1.next;
+}
+
+//this algorithm fail, because u can't use ! in program
+//the result over flow
+int uniquePaths0(int m, int n) {
+	/*n -= 1;
+	m -= 1;
+	n += m;
+	cout << n << " " << m;
+	*/
+	int nn = n - 1;
+	int mm = m - 1;
+	nn += mm;
+	int child = 1;
+	int par = 1;
+	for (int k = nn; k>nn - mm; k--)
+	{
+		child *= k;
+	}
+	for (int i = mm; i>0; i--)
+	{
+		par *= i;
+		cout <<"par = "<< par << endl ;
+	}
+	int r = child / par;
+
+	return r;
+}
+
+int uniquePaths(int m, int n) {
+	if (m == 0 || n == 0)
+		return 0;
+	if (m == 1 || n == 1)
+		return 1;
+
+	int nn = m-1 + n-1;
+	int r = compose(nn, m-1);
+	return r;
+
+}
+
+int compose(int nn, int m) {
+	int r = 0;
+	if (nn == m) {
+		return 1;
+	}
+	if (m == 0) {
+		return 1;
+	}
+	r = compose(nn - 1, m); //m exists in end nn-1
+	r += compose(nn - 1, m - 1);
+	return r;
 }
 /*
 */

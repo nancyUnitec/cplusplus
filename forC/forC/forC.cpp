@@ -9,6 +9,7 @@
 
 #include "forCPP.h"
 #include "leetcode.h"
+#include "playground.h"
 
 void test(char **p);
 void showTheSizeOfBlock();
@@ -107,6 +108,9 @@ int main()
     */
 
 	testLeetCode();
+
+	runPlayground();
+
 
 	return 0;
 }

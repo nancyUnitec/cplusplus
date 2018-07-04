@@ -34,6 +34,13 @@ string minWindow(string s, string t);
 
 void rotate(vector<vector<int> > &matrix);
 
+int my_numDecodings(string s);
+
+int uniquePaths(int m, int n);
+int compose(int nn, int m);
+
+int my_numDecodings_1(string s);
+
 struct Interval {
 	int start;
 	int end;
