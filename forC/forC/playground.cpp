@@ -19,8 +19,12 @@ int runPlayground()
 
 	//char* s = "abcabcbb";
 	//char* s = "c";
-	char* s = "aab";
-	int res = lengthOfLongestSubstring_180701(s);
+	//char* s = "aab";
+	//int res = lengthOfLongestSubstring_180701(s);
+
+	//int res = reverse_180706(123);
+
+	bool res = isPalindrome("haha");
 
 	return 0;
 }
@@ -79,4 +83,164 @@ int lengthOfLongestSubstring_180701(char* s) {
 		return slen;
 	else
 		return end - start;
+}
+
+
+int reverse_before_201807(int x) {
+	int res = 0;
+
+	int *p = (int*)malloc(10 * sizeof(int));
+	//assert(p);
+
+	int i = 0;
+	int j = 0;
+	int highest = 0;
+	int num = 0;
+
+	for (int index = 0; index < 10; index++)
+	{
+		p[index] = 0;
+	}
+
+	if (x == 0)
+	{
+
+	}
+	else
+	{
+		while (x)
+		{
+			num = x % 10;
+			p[i] = num;
+			x /= 10;
+			i++;
+		}
+		highest = i - 1;
+		//j = highest;
+		res = p[0];
+		j = 1;
+
+		while (j <= highest)
+		{
+			res = res * 10 + p[j];
+			j++;
+		}
+
+	}
+
+	free(p);
+	p = NULL;
+	return res;
+}
+
+
+int reverse_180706(int x) {
+	long long res = 0;
+	int num = 0;
+
+	if (x == 0)
+	{
+
+	}
+	else
+	{
+		while (x)
+		{
+			res = res * 10;
+			num = x % 10;
+			x /= 10;
+			res += num;
+			if (res<INT_MIN || res>INT_MAX)
+			{
+				res = 0;
+				break;
+			}
+		}
+	}
+
+	return res;
+}
+
+//leetcode no 125 problem, the code is ok in vs 2010,but fail on leetcode webpage
+bool isPalindrome_180708(char* s) {
+	bool res = true;
+	//if (strlen(pchar) <= 1) //for char*
+
+	int i = 0;
+	int j = strlen(s) - 1;
+	while (i<j)
+	{
+		if (s[i] == s[j])
+		{
+			i++;
+			j--;
+		}
+		else
+		{
+			if (isLetter(s[i]) && isLetter(s[j]))
+			{
+				res = false;
+				break;
+			}
+			else
+			{
+				if (isLetter(s[i]))
+				{
+					j--;
+				}
+				else
+				{
+					i++;
+				}
+			}
+		}
+	}
+
+	return res;
+}
+
+bool isLetter_180708(char c)
+{
+	//     if( (c>='a' && c<='z') || (c>='A' && c<='Z'))
+	//      return true;//返回1表示是字母
+	//    return 0;//返回0表示不是字母
+	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
+}
+
+//this 180709 soulution beat 100% of c submissions
+bool isPalindrome_180709(char* s) {
+	bool res = true;
+	//if (strlen(pchar) <= 1) //for char*
+
+	int i = 0;
+	int j = strlen(s) - 1;
+	while (i<j)
+	{
+		if (tolower(s[i]) == tolower(s[j]))
+		{
+			i++;
+			j--;
+		}
+		else
+		{
+			if (isalnum(s[i]) && isalnum(s[j]))
+			{
+				res = false;
+				break;
+			}
+			else
+			{
+				if (isalnum(s[i]))
+				{
+					j--;
+				}
+				else
+				{
+					i++;
+				}
+			}
+		}
+	}
+
+	return res;
 }
