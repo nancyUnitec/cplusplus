@@ -140,6 +140,7 @@ int testLeetCode()
 	int r = uniquePaths(3, 2);
 	*/
 
+	restoreIpAddresses("25525511135");
 	return 0;
 }
 
@@ -846,6 +847,7 @@ string minWindow(string s, string t) {
 	return d == INT_MAX ? "" : s.substr(head, d);
 }
 
+/*
 vector<Interval> mergeIntervals(vector<Interval>& intervals) {
 	if (intervals.empty()) return vector<Interval>{};
 	vector<Interval> res;
@@ -858,6 +860,7 @@ vector<Interval> mergeIntervals(vector<Interval>& intervals) {
 	}
 	return res;
 }
+*/
 
 /*
 * clockwise rotate
@@ -1120,6 +1123,95 @@ int compose(int nn, int m) {
 	r += compose(nn - 1, m - 1);
 	return r;
 }
+
+bool isValidIPPart(string ipStr)
+{
+	if (ipStr == "")
+		return false;
+
+	if (ipStr[0] != '0' && atoi(ipStr.c_str()) <= 255)
+		return true;
+	else
+		return false;
+}
+
+void findDotPos(int dotIndex, string s, int *dotPosSet, int Pos, vector<string> &res, string cur)
+{
+	string lastIP = "";
+	if (dotIndex == 0)
+	{
+		//int partLen = Pos - dotPosSet[dotIndex - 1] + 1;
+		lastIP = s.substr(0, Pos+1);
+	}
+	else if (dotIndex>0)
+	{
+		int partLen = Pos - (dotPosSet[dotIndex-1]+1) + 1;
+		lastIP = s.substr(dotPosSet[dotIndex-1]+1, partLen);
+	}
+	cout << "dotIndex = " << dotIndex << " lastIP = " << lastIP << " cur = " << cur << endl;
+	if (dotIndex == 3)
+	{
+		if (isValidIPPart(lastIP))
+		{
+			string complete = cur + lastIP;
+			//dotPosSet[dotIndex] = Pos;
+			//string ipStr = ""; 
+			//for(int j = 0;j<4;j++){
+			/*
+			ipStr += s.substr(0,dotPosSet[0]+1)+"."+
+			s.substr(dotPosSet[0]+1,dotPosSet[1]-dotPosSet[0])+"."+
+			s.substr(dotPosSet[1]+1,dotPosSet[2]-dotPosSet[1])+"."+
+			s.substr(dotPosSet[2]+1,s.length()-dotPosSet[2]);
+			*/
+			if(complete.length() == s.length()+3)
+				res.push_back(complete);
+
+				//}    
+            
+		}
+		//else
+		//{
+		//cur = "";
+		return;
+		//}
+	}
+	else
+	{
+		if (isValidIPPart(lastIP) || dotIndex == -1)
+		{
+			int lastDotPos = -1;
+			string lastValid = cur;
+			if (isValidIPPart(lastIP))
+			{
+				lastDotPos = Pos;
+				lastValid += lastIP + ".";
+				dotPosSet[dotIndex] = Pos;
+			}
+			
+			for(int i = 1; i <= 3; i++)
+			{
+				if((lastDotPos + i)<s.length())
+					findDotPos(dotIndex + 1, s, dotPosSet, lastDotPos + i, res, lastValid);
+			}
+		}
+		else
+		{
+			return;
+		}
+
+	}
+}
+
+vector<string> restoreIpAddresses(string s) {
+	vector<string> res;
+	int dotPosSet[4];
+	string cur = "";
+	findDotPos(-1, s, dotPosSet, 0, res, cur);
+	return res;
+}
+
+
+
 /*
 */
 // int findSubstring(string s) {
@@ -1145,3 +1237,46 @@ int compose(int nn, int m) {
 // 	}
 // 	return d;
 // }
+
+//this soution also beat 100%
+int uniquePathsWithObstacles(int** obstacleGrid, int obstacleGridRowSize, int obstacleGridColSize) {
+	int* ways = (int*)malloc(obstacleGridRowSize * sizeof(int));
+	//memset(ways, '\0', obstacleGridRowSize * sizeof(int));
+
+	for (int i = 0; i<obstacleGridRowSize; i++)
+	{
+
+		if (obstacleGrid[i][0]>0)
+			ways[i] = 0;
+		else
+		{
+			if (i == 0)
+				ways[i] = 1;
+			else
+				ways[i] = ways[i - 1];
+		}
+
+
+	}
+
+	for (int j = 1; j<obstacleGridColSize; j++)
+	{
+
+		for (int i = 0; i<obstacleGridRowSize; i++)
+		{
+			if (obstacleGrid[i][j]>0)
+				ways[i] = 0;
+			else
+			{
+				if (i == 0)
+					ways[i] = ways[i];
+				else
+					ways[i] += ways[i - 1];
+			}
+
+		}
+	}
+
+	return ways[obstacleGridRowSize - 1];
+
+}

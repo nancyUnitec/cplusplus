@@ -11,6 +11,7 @@ using namespace std;
 #include "leetcode.h"
 #include "playground.h"
 
+//typedef Interval Interval_c;
 
 int runPlayground()
 {
@@ -24,7 +25,20 @@ int runPlayground()
 
 	//int res = reverse_180706(123);
 
-	bool res = isPalindrome("haha");
+	//bool res = isPalindrome("haha");
+
+	struct Interval_c intervals[5];
+	intervals[0].start = 0; intervals[0].end = 20;
+	intervals[1].start = 4; intervals[1].end = 21;
+	intervals[2].start = 2; intervals[2].end = 22;
+	intervals[3].start = 3; intervals[3].end = 23;
+	intervals[4].start = 6; intervals[4].end = 24;
+	
+	sortIntervals(intervals, 5);
+	struct Interval_c* res;
+
+	int returnSize = 0;
+	res = merge(intervals, 5, &returnSize);
 
 	return 0;
 }
@@ -177,14 +191,14 @@ bool isPalindrome_180708(char* s) {
 		}
 		else
 		{
-			if (isLetter(s[i]) && isLetter(s[j]))
+			if (isLetter_180708(s[i]) && isLetter_180708(s[j]))
 			{
 				res = false;
 				break;
 			}
 			else
 			{
-				if (isLetter(s[i]))
+				if (isLetter_180708(s[i]))
 				{
 					j--;
 				}
@@ -242,5 +256,132 @@ bool isPalindrome_180709(char* s) {
 		}
 	}
 
+	return res;
+}
+
+/*
+void sortIntervals(Interval_c intervals[], int intervalSize)
+{
+	int i, j, k;
+	Interval_c temp;
+
+	for (i = 1; i<intervalSize; i++)
+	{
+		temp = intervals[i];
+		j = i - 1;
+		while (j >= 0 && temp.start<intervals[j].start)
+		{
+			intervals[j + 1] = intervals[j];
+			j--;
+		}
+		intervals[j + 1] = temp;
+		printf("   i=%d   ", i);
+
+		for (k = 0; k<intervalSize; k++)
+			printf("%3d", intervals[k].start);
+
+		printf("\n");
+	}
+}
+
+struct Interval_c* merge(struct Interval_c* intervals, int intervalsSize, int* returnSize) {
+
+	struct Interval_c currentInterval;
+	//currentInterval = (struct Interval_c *)malloc(sizeof(struct Interval_c)) ;
+	struct Interval_c* res;
+	*returnSize = 0;
+	if(intervalsSize == 0)
+		return NULL;
+	else
+	{
+		currentInterval.start = intervals[0].start;
+		currentInterval.end = intervals[0].end;
+		res = (struct Interval_c *)malloc(sizeof(struct Interval_c));
+		memcpy(res, &currentInterval, sizeof(struct Interval_c));
+
+		*returnSize = 1;
+	}
+	for (int index = 1; index < intervalsSize; index++)
+	{
+		if (currentInterval.end >= intervals[index].start)
+		{
+			if (currentInterval.end < intervals[index].end)
+			{
+				currentInterval.end = intervals[index].end;
+				res[*returnSize - 1].end = intervals[index].end;
+			}
+		}
+		else
+		{
+			currentInterval.start = intervals[index].start;
+			currentInterval.end = intervals[index].end;
+			*returnSize += 1;
+			res = (struct Interval_c *)realloc(res, sizeof(int*)*(*returnSize));
+			res[*returnSize - 1].start = currentInterval.start;
+			res[*returnSize - 1].end = currentInterval.end;
+		}
+	}
+	return res;
+}
+*/
+
+
+
+void sortIntervals(struct Interval_c intervals[], int intervalSize)
+{
+	int i, j, k;
+	struct Interval_c temp;
+
+	for (i = 1; i<intervalSize; i++)
+	{
+		temp = intervals[i];
+		j = i - 1;
+		while (j >= 0 && temp.start<intervals[j].start)
+		{
+			intervals[j + 1] = intervals[j];
+			j--;
+		}
+		intervals[j + 1] = temp;
+	}
+}
+
+struct Interval_c* merge(struct Interval_c* intervals, int intervalsSize, int* returnSize) {
+
+	struct Interval_c currentInterval;
+	//currentInterval = (struct Interval_c *)malloc(sizeof(struct Interval_c)) ;
+	struct Interval_c* res;
+	*returnSize = 0;
+	if (intervalsSize == 0)
+		return NULL;
+	else
+	{
+		sortIntervals(intervals, intervalsSize);
+		currentInterval.start = intervals[0].start;
+		currentInterval.end = intervals[0].end;
+		res = (struct Interval_c *)malloc(sizeof(struct Interval_c));
+		memcpy(res, &currentInterval, sizeof(struct Interval_c));
+
+		*returnSize = 1;
+	}
+	for (int index = 1; index < intervalsSize; index++)
+	{
+		if (currentInterval.end >= intervals[index].start)
+		{
+			if (currentInterval.end < intervals[index].end)
+			{
+				currentInterval.end = intervals[index].end;
+				res[*returnSize - 1].end = intervals[index].end;
+			}
+		}
+		else
+		{
+			currentInterval.start = intervals[index].start;
+			currentInterval.end = intervals[index].end;
+			*returnSize += 1;
+			res = (struct Interval_c *)realloc(res, sizeof(int*)*(*returnSize));
+			res[*returnSize - 1].start = currentInterval.start;
+			res[*returnSize - 1].end = currentInterval.end;
+		}
+	}
 	return res;
 }

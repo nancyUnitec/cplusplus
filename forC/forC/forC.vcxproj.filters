@@ -39,6 +39,12 @@
     <ClInclude Include="playground.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="lintcode.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mysort.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -60,6 +66,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="playground.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lintcode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mysort.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

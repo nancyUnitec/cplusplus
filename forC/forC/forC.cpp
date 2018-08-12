@@ -10,6 +10,11 @@
 #include "forCPP.h"
 #include "leetcode.h"
 #include "playground.h"
+#include "lintCode.h"
+
+#include "mysort.h"
+
+
 
 void test(char **p);
 void showTheSizeOfBlock();
@@ -107,10 +112,27 @@ int main()
 	reverse(460);
     */
 
-	testLeetCode();
+	//testLeetCode();
 
-	runPlayground();
+	//runPlayground();
 
+	//testLintCode();
+
+	Element data[15] = { 'A', 'B', 'D', '#', '#', 'E', '#', '#', 'C', 'F','#', '#', 'G', '#', '#' };
+	Tree tree;
+	treeNodeConstructor(tree, data);
+	/* the tree's shape is like this:
+	    A
+	   /  \
+	  B    C
+	 / \   / \
+	D   E  F  G
+	
+	*/
+
+	//preOrderTraversal(tree);  // ABDECFG
+	//inOrderTraversal(tree); //DBEAFCG
+	postOrderTraversal(tree);  //DEBFGCA
 
 	return 0;
 }

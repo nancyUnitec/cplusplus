@@ -41,19 +41,26 @@ int compose(int nn, int m);
 
 int my_numDecodings_1(string s);
 
-struct Interval {
+struct Interval_cplusplus {
 	int start;
 	int end;
-	Interval() : start(0), end(0) {}
-	Interval(int s, int e) : start(s), end(e) {}
+	Interval_cplusplus() : start(0), end(0) {}
+	Interval_cplusplus(int s, int e) : start(s), end(e) {}
 };
 
-vector<Interval> mergeIntervals(vector<Interval>& intervals);
+struct Interval_c {
+	int start;
+	int end;
+};
+
+vector<Interval_cplusplus> mergeIntervals(vector<Interval_cplusplus>& intervals);
 //Definition for singly-linked list.
 struct ListNode {
     int val;
     struct ListNode *next;
 };
+
+vector<string> restoreIpAddresses(string s);
 
 
 

@@ -20,3 +20,9 @@ int reverse_180706(int x);
 bool isPalindrome(char* s);
 
 bool isLetter(char c);
+
+bool isLetter_180708(char c);
+
+void sortIntervals(Interval_c intervals[], int intervalSize);
+
+struct Interval_c* merge(struct Interval_c* intervals, int intervalsSize, int* returnSize);
