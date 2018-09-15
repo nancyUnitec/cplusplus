@@ -140,7 +140,14 @@ int testLeetCode()
 	int r = uniquePaths(3, 2);
 	*/
 
-	restoreIpAddresses("25525511135");
+	//restoreIpAddresses("25525511135");
+
+	//int data[15] = { 2,1,-1,-1,3,-1,-1 };
+	int data[15] = { 5,1,-1,-1,4,3,-1,-1,6,-1,-1 };
+
+	TreeNode* tree;
+	treeNodeConstructor(tree, data);
+    bool res = isValidBST(tree);
 	return 0;
 }
 
@@ -1210,7 +1217,60 @@ vector<string> restoreIpAddresses(string s) {
 	return res;
 }
 
+int int_index = 0;  //全局索引变量
 
+//二叉树构造器,按先序遍历顺序构造二叉树
+//无左子树或右子树用'#'表示
+void treeNodeConstructor(struct TreeNode* &root, int data[]) {
+	int e = data[int_index++];
+	if (e == -1) {
+		root = NULL;
+	}
+	else {
+		root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+		root->val = e;
+		treeNodeConstructor(root->left, data);  //递归构建左子树
+		treeNodeConstructor(root->right, data);  //递归构建右子树
+	}
+}
+
+//this solution has a  ---conflicting types for 'check1'----error 
+//in leetcode C language text page
+//I don't konw why
+//but as for C++ page, it is accepted, though the performance is quite bad
+//only beats 1 percent of cpp submissions
+bool isValidBST(struct TreeNode* root) {
+	struct TreeNode* node = NULL;
+	struct TreeNode** prev = &node;
+
+	return(check1(root, prev));
+}
+
+bool check1(struct TreeNode* root, struct TreeNode** prev)
+{
+	if (root)
+	{
+		cout << root->val << " ";
+		if (!check1(root->left, prev))
+			return false;
+		if (*prev)
+		{
+			if ((*prev)->val >= root->val)
+			{
+				cout<<"prev = "<< (*prev)->val <<endl;
+				cout<<"root = "<< root->val <<endl;
+
+				return false;
+			}
+		}
+		*prev = root;
+		return(check1(root->right, prev));
+	}
+	else
+	{
+		return true;
+	}
+}
 
 /*
 */

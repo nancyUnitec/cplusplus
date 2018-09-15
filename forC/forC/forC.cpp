@@ -112,15 +112,15 @@ int main()
 	reverse(460);
     */
 
-	//testLeetCode();
+	testLeetCode();
 
 	//runPlayground();
 
 	//testLintCode();
 
-	Element data[15] = { 'A', 'B', 'D', '#', '#', 'E', '#', '#', 'C', 'F','#', '#', 'G', '#', '#' };
-	Tree tree;
-	treeNodeConstructor(tree, data);
+	//Element data[15] = { 'A', 'B', 'D', '#', '#', 'E', '#', '#', 'C', 'F','#', '#', 'G', '#', '#' };
+	//Tree tree;
+	//treeNodeConstructor(tree, data);
 	/* the tree's shape is like this:
 	    A
 	   /  \
@@ -132,7 +132,7 @@ int main()
 
 	//preOrderTraversal(tree);  // ABDECFG
 	//inOrderTraversal(tree); //DBEAFCG
-	postOrderTraversal(tree);  //DEBFGCA
+	//postOrderTraversal(tree);  //DEBFGCA
 
 	return 0;
 }

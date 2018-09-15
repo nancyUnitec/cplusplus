@@ -60,6 +60,26 @@ struct ListNode {
     struct ListNode *next;
 };
 
+/**
+* Definition for a binary tree node.
+* struct TreeNode {
+*     int val;
+*     struct TreeNode *left;
+*     struct TreeNode *right;
+* };
+*/
+
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+};
+
+void treeNodeConstructor(struct TreeNode* &root, int data[]);
+
+bool isValidBST(struct TreeNode* root);
+bool check1(struct TreeNode* root, struct TreeNode** prev);
+
 vector<string> restoreIpAddresses(string s);
 
 
