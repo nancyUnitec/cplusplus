@@ -98,8 +98,8 @@ int testLeetCode()
 	//block = yx_permute(arr, 4, &returnSize);
 
 	
-	string s = "pnsdfsdfsfsalinda";
-	string t = "na";
+	//string s = "pnsdfsdfsfsalinda";
+	//string t = "na";
 	
 	//string set = minWindow(s, t);
 
